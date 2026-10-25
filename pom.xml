@@ -12,7 +12,7 @@
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>com.bms.triangle.Main</main.class>
+        <main.class>com.bms.triangle.cli.Main</main.class>
 
         <junit.version>5.13.4</junit.version>
         <assertj.version>3.27.3</assertj.version>
@@ -45,6 +45,7 @@
     </dependencies>
 
     <build>
+        <finalName>triangle-classifier</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
