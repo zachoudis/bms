@@ -9,6 +9,7 @@ import com.bms.triangle.core.exception.NotATriangleException;
 import com.bms.triangle.core.enums.TriangleType;
 import com.bms.triangle.core.model.ValidationError;
 import com.bms.triangle.core.enums.ValidationReason;
+import java.math.BigInteger;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -51,6 +52,14 @@ class TriangleClassifierTest {
     void rejectsSidesThatDoNotFormATriangle() {
         assertThatThrownBy(() -> classifier.classify("1", "10", "1"))
                 .isInstanceOf(NotATriangleException.class);
+    }
+
+    @Test
+    void reportsTheSidesThatDoNotFormATriangleInArgumentOrder() {
+        NotATriangleException exception =
+                catchThrowableOfType(NotATriangleException.class, () -> classifier.classify("1", "10", "1"));
+        assertThat(exception).as("expected NotATriangleException").isNotNull();
+        assertThat(exception.sides()).containsExactly(BigInteger.ONE, BigInteger.TEN, BigInteger.ONE);
     }
 
     private List<ValidationError> validationErrors(String a, String b, String c) {

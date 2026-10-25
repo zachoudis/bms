@@ -6,6 +6,6 @@ public final class Main {
     }
 
     public static void main(String[] args) {
-        System.exit(TriangleClassifierCommand.run(args, System.out, System.err).ordinal());
+        System.exit(TriangleClassifierCommand.run(args, System.out, System.err).code());
     }
 }
