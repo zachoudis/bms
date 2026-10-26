@@ -1,4 +1,4 @@
-package com.bms.triangle.cli;
+package com.bms.triangle.cli.enums;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

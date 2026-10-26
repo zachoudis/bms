@@ -1,4 +1,4 @@
-package com.bms.triangle.cli;
+package com.bms.triangle.cli.enums;
 
 public enum ExitCode {
     SUCCESS(0),

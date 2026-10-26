@@ -2,6 +2,7 @@ package com.bms.triangle.cli;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.bms.triangle.cli.enums.ExitCode;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;

@@ -1,5 +1,6 @@
 package com.bms.triangle.cli;
 
+import com.bms.triangle.cli.enums.ExitCode;
 import com.bms.triangle.core.TriangleClassifier;
 import com.bms.triangle.core.exception.InvalidSidesException;
 import com.bms.triangle.core.exception.NotATriangleException;
