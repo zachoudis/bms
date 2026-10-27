@@ -17,8 +17,8 @@ java -jar target/triangle-classifier.jar 3 4 5
 
 ## Input rules
 
-- Exactly three arguments, each one a side length. There are no flags (`--help` is
-  treated as a side value). Stdin is not read.
+- Exactly three arguments, each one a side length. There are no flags, and stdin is not
+  read.
 - Each side must be an integer matching `-?[0-9]+`. Values like `abc` or `4.0` are
   rejected.
 - Each side must be greater than zero.

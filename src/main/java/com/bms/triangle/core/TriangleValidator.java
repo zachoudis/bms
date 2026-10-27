@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /** Validates three side lengths given as text and converts them to numbers. */
-public final class ValidationService {
+public final class TriangleValidator {
 
     private static final Pattern INTEGER = Pattern.compile("-?[0-9]+");
 

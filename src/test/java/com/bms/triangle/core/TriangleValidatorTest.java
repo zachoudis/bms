@@ -13,9 +13,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class ValidationServiceTest {
+class TriangleValidatorTest {
 
-    private final ValidationService validationService = new ValidationService();
+    private final TriangleValidator triangleValidator = new TriangleValidator();
 
     @ParameterizedTest(name = "[{index}] \"{0}\" -> {1}")
     @CsvSource(delimiter = '|', textBlock = """
@@ -23,12 +23,12 @@ class ValidationServiceTest {
             99999999999999999999 | 99999999999999999999
             """)
     void returnsValidSidesAsNumbers(String value, BigInteger expected) {
-        assertThat(validationService.validate(value, "4", "5"))
+        assertThat(triangleValidator.validate(value, "4", "5"))
                 .containsExactly(expected, BigInteger.valueOf(4), BigInteger.valueOf(5));
     }
 
     @ParameterizedTest(name = "[{index}] \"{0}\"")
-    @ValueSource(strings = {"abc", "x", "4.0", "--help"})
+    @ValueSource(strings = {"abc", "x", "4.0"})
     void rejectsValuesThatAreNotValidIntegers(String value) {
         assertThat(validationErrors(value, "4", "5"))
                 .containsExactly(new ValidationError(value, ValidationReason.NOT_AN_INTEGER));
@@ -51,13 +51,13 @@ class ValidationServiceTest {
 
     @Test
     void doesNotCheckTheTriangleInequality() {
-        assertThat(validationService.validate("1", "2", "3"))
+        assertThat(triangleValidator.validate("1", "2", "3"))
                 .containsExactly(BigInteger.ONE, BigInteger.TWO, BigInteger.valueOf(3));
     }
 
     private List<ValidationError> validationErrors(String a, String b, String c) {
         InvalidSidesException exception =
-                catchThrowableOfType(InvalidSidesException.class, () -> validationService.validate(a, b, c));
+                catchThrowableOfType(InvalidSidesException.class, () -> triangleValidator.validate(a, b, c));
         assertThat(exception).as("expected InvalidSidesException").isNotNull();
         return exception.errors();
     }

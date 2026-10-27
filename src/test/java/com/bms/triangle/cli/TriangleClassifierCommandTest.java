@@ -45,7 +45,7 @@ class TriangleClassifierCommandTest {
                 failure(args("1", "10", "1"), ExitCode.INVALID_TRIANGLE,
                         "Error: sides 1, 10, 1 do not form a triangle\n"),   // sides in argument order
                 failure(args(), ExitCode.USAGE_ERROR, USAGE),
-                failure(args("--help"), ExitCode.USAGE_ERROR, USAGE));
+                failure(args("3"), ExitCode.USAGE_ERROR, USAGE));
     }
 
     @ParameterizedTest(name = "[{index}] {0}")

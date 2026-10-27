@@ -12,15 +12,14 @@ java -jar target/triangle-classifier.jar <a> <b> <c>
 ```
 
 - Exactly three arguments. Each one is a side length.
-- No flags or options. `--help`, `-h` and similar are treated as side values (and so
-  are invalid).
+- No flags or options.
 - Input comes only from the arguments. Stdin is not read.
 
 ## Side length format
 
 Each side is expected to be either a whole number written in plain digits, such as `5`
-or `120`, or other text, such as `abc`. Numbers are assumed never to have leading zeros
-(`05`) or surrounding whitespace.
+or `120`, or other text, such as `abc`. Numbers are assumed never to have surrounding
+whitespace. Leading zeros are allowed and do not change the value: `05` is read as `5`.
 
 A side is valid only if it matches all of these rules:
 
