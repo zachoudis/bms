@@ -46,6 +46,5 @@ public final class TriangleClassifierCommand {
 
     private static void printLine(PrintStream stream, String line) {
         stream.print(line + "\n");
-        stream.flush();
     }
 }
