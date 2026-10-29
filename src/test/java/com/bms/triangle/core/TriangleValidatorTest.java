@@ -1,17 +1,18 @@
 package com.bms.triangle.core;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowableOfType;
-
-import com.bms.triangle.core.exception.InvalidSidesException;
-import com.bms.triangle.core.model.ValidationError;
-import com.bms.triangle.core.enums.ValidationReason;
 import java.math.BigInteger;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowableOfType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import com.bms.triangle.core.enums.ValidationReason;
+import com.bms.triangle.core.exception.InvalidSidesException;
+import com.bms.triangle.core.model.ValidationError;
 
 class TriangleValidatorTest {
 
@@ -20,6 +21,8 @@ class TriangleValidatorTest {
     @ParameterizedTest(name = "[{index}] \"{0}\" -> {1}")
     @CsvSource(delimiter = '|', textBlock = """
             5                    | 5
+            05                   | 5
+            007                  | 7
             99999999999999999999 | 99999999999999999999
             """)
     void returnsValidSidesAsNumbers(String value, BigInteger expected) {
@@ -35,7 +38,7 @@ class TriangleValidatorTest {
     }
 
     @ParameterizedTest(name = "[{index}] \"{0}\"")
-    @ValueSource(strings = {"0", "-1", "-99999999999999999999"})
+    @ValueSource(strings = {"0", "00", "-1", "-05", "-99999999999999999999"})
     void rejectsValuesThatAreNotPositive(String value) {
         assertThat(validationErrors(value, "4", "5"))
                 .containsExactly(new ValidationError(value, ValidationReason.NOT_POSITIVE));

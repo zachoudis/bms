@@ -35,3 +35,4 @@ line.
 | 0    | Valid triangle, classification printed                                   |
 | 1    | A side is not a valid positive integer, or the sides don't form a triangle |
 | 2    | Usage error: the argument count is not exactly 3                          |
+| 3    | Internal error: an unexpected failure inside the program                  |

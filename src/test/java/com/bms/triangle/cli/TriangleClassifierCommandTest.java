@@ -1,15 +1,17 @@
 package com.bms.triangle.cli;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import com.bms.triangle.cli.enums.ExitCode;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import com.bms.triangle.cli.enums.ExitCode;
 
 class TriangleClassifierCommandTest {
 
@@ -44,6 +46,11 @@ class TriangleClassifierCommandTest {
                 // Extra cases from the spec rules
                 failure(args("1", "10", "1"), ExitCode.INVALID_TRIANGLE,
                         "Error: sides 1, 10, 1 do not form a triangle\n"),   // sides in argument order
+                success(args("05", "5", "5"), "Equilateral\n"),                // leading zeros: 05 is 5
+                failure(args("05", "1", "1"), ExitCode.INVALID_TRIANGLE,
+                        "Error: sides 5, 1, 1 do not form a triangle\n"),
+                failure(args("00", "4", "5"), ExitCode.INVALID_TRIANGLE,
+                        "Error: \"00\" must be positive\n"),                    // invalid sides echo the text as typed
                 failure(args(), ExitCode.USAGE_ERROR, USAGE),
                 failure(args("3"), ExitCode.USAGE_ERROR, USAGE));
     }
@@ -52,6 +59,13 @@ class TriangleClassifierCommandTest {
     @MethodSource("examples")
     void writesExpectedOutputAndExitCode(String description, String[] args, Result expected) {
         assertThat(run(args)).isEqualTo(expected);
+    }
+
+    @Test
+    void reportsAnUnexpectedFailureAsAnInternalError() {
+        // The command line can never pass null, so a null side stands in for a bug inside the program.
+        assertThat(run(null, "4", "5"))
+                .isEqualTo(new Result(ExitCode.INTERNAL_ERROR, "", "Error: unexpected internal error\n"));
     }
 
     record Result(ExitCode exitCode, String stdout, String stderr) {

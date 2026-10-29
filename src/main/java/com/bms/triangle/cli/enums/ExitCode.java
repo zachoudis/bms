@@ -3,7 +3,8 @@ package com.bms.triangle.cli.enums;
 public enum ExitCode {
     SUCCESS(0),
     INVALID_TRIANGLE(1),
-    USAGE_ERROR(2);
+    USAGE_ERROR(2),
+    INTERNAL_ERROR(3);
 
     private final int code;
 

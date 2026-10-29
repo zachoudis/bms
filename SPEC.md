@@ -69,6 +69,7 @@ and nothing else. Exit code `0`. Nothing is written to stderr.
 | 0         | Success          | Valid triangle, classified                        |
 | 1         | Invalid triangle | At least one side is not a valid positive integer, or all sides are valid but break the triangle inequality |
 | 2         | Usage error      | The argument count is not exactly 3               |
+| 3         | Internal error   | An unexpected failure inside the program (a bug)  |
 
 Checks run in this order: argument count, then every side, then the triangle
 inequality. Each stage runs only if the one before it passed.
@@ -77,6 +78,15 @@ inequality. Each stage runs only if the one before it passed.
 
 ```
 Usage: triangle-classifier <a> <b> <c>
+```
+
+### Internal error (exit 3)
+
+If the program fails in a way the rules above don't cover, it prints this single line
+and no stack trace:
+
+```
+Error: unexpected internal error
 ```
 
 ### Invalid sides (exit 1)
