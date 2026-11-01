@@ -56,11 +56,19 @@ those gaps. **Every decision in [`SPEC.md`](SPEC.md) is mine.**
 > responsibilities, how input parsing, validation and classification are separated, and
 > which tests you'll write. Keep it simple; this is a small app. Don't edit anything.
 
-**Why:** I spent the most time on this step. I pushed back on Claude's first plan and
-added my own ideas until the design was one I would defend in a code review. Plan mode
-meant no files changed until I approved the plan.
+**Why:** I spent the most time on this step. Plan mode meant no files changed until I
+approved the plan, so I could push back on the design before any code existed. Two
+changes I asked for:
 
-<!-- TODO: add one concrete example of a change you asked for in the plan. -->
+- **Simpler:** I dropped a `SideParseResult` interface from the first plan. It wasn't
+  needed, and I wanted the implementation kept simple.
+- **Reusable:** I moved the triangle logic out of the CLI command into its own `core`
+  package, so it could later be used from another service, not only from the command
+  line. This became the `core`/`cli` split.
+
+Once the first version worked, I kept shaping the design myself. I split validation into
+its own class, grouped the records, enums and exceptions into sub-packages, and renamed
+classes such as `SideError` to `ValidationError` so the names said what they hold.
 
 ## 4. Tests first
 
@@ -129,10 +137,10 @@ To run it, ask Claude to "use the spec-reviewer agent to review the code".
 
 ## 8. Code review with `/code-review`
 
-I ran `/code-review` after each round of changes: four times in all. None of the reviews
-found a correctness bug. Each one ran `mvn verify` and tried the jar, then reported
-weak spots. I treated the findings as suggestions, not orders: I fixed some, changed
-some, and rejected some with a reason.
+I ran `/code-review` after each round of changes: five times in all. None of the reviews
+found a bug in how the app behaves. Each one ran the build, then reported weak spots. I
+treated the findings as suggestions, not orders: I fixed some, changed some, and
+rejected some with a reason.
 
 **Fixed**
 
@@ -156,15 +164,22 @@ some, and rejected some with a reason.
 - **Exposing the sides as named fields instead of a `List`.** The second review raised
   this about my `sides()` change. I kept the list: it's a small app, and the sides are
   only read in one place.
-- **Keeping the `Triangle` record.** When I removed the record and moved its logic into
-  `classify`, the review argued for keeping it, citing the "use records" rule in
-  `CLAUDE.md`. I asked Claude to argue both sides, then kept my simpler design, because
-  nothing else used the record.
+- **Naming the package `cli.enums`.** The review preferred a domain name over one named
+  after a Java feature. I kept it to match the existing `core.enums` package.
+
+**Accepted after pushing back: keeping the `Triangle` record**
+
+I thought the `Triangle` record was unnecessary, since nothing else used it, so I tried
+removing it on a separate branch and moved its logic into the classifier. The review
+argued for keeping it, citing the "use records" rule in `CLAUDE.md`. I asked Claude to
+argue both sides. In the end I kept the record: it checks the triangle rule in its
+constructor, so an invalid triangle can't exist, while without it the rule only holds
+if the validator happens to run first. The branch stayed unmerged.
 
 **The guardrails working**
 
-During the `Triangle` refactor, one existing test started failing because its inputs
-were no longer a valid triangle. Claude didn't change the test. Following `CLAUDE.md`,
-it stopped and asked me, and the `Stop` hook kept reporting the failure at the end of
+During that experiment, one existing test started failing because its inputs were no
+longer a valid triangle. Claude didn't change the test. Following `CLAUDE.md`, it
+stopped and asked me, and the `Stop` hook kept reporting the failure at the end of
 each turn until I decided. The review also caught that the git index was half staged,
 which would have produced a commit that doesn't compile.
