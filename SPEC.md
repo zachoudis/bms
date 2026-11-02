@@ -109,7 +109,8 @@ problems occurs.
 Error: sides <a>, <b>, <c> do not form a triangle
 ```
 
-The sides appear in argument order.
+The sides appear in argument order. Each side is shown as a number, without leading zeros
+(`05` is shown as `5`).
 
 ## Examples
 

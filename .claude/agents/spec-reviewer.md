@@ -26,14 +26,16 @@ Learn the design from the code itself. Don't flag a deliberate design choice as 
 1. **Requirements coverage.** Go through SPEC.md section by section, including every row of its Examples table. For each requirement, confirm it is (a) implemented correctly and (b) covered by an automated test. Look hard at edge cases, for example:
    - values the syntax rule must reject: decimals, exponents, hex, a lone `-`, `+5`, empty strings, non-ASCII digits
    - zero, `-0` and negative values
+   - leading zeros: `05` is read as `5`, `00` must be positive, and how such sides appear in each message
    - arbitrarily large values and exact arithmetic
    - degenerate triangles, in every argument order
    - the order the checks run in, and later checks being skipped
    - every invalid value reported, in argument order, with the right one of the two messages
    - exact message text, quoting, trailing newline, which stream it goes to, and the other stream staying empty
-   - the numeric exit codes 0, 1 and 2, and stdin not being read
+   - the numeric exit codes 0, 1, 2 and 3, and stdin not being read
+   - an internal error printing its single line and no stack trace
 
-   Where SPEC.md says an input is "assumed never" to occur (leading zeros, surrounding whitespace), don't report how the code handles it as a bug. You may note it.
+   Where SPEC.md says an input is "assumed never" to occur (surrounding whitespace), don't report how the code handles it as a bug. You may note it.
 2. **Real-process behaviour.** Run the jar on a representative set of inputs, including the spec examples and some edge cases. Check stdout, stderr and the exit code separately. Note anything that depends on the environment (locale or encoding, for example).
 3. **Correctness bugs.** Any input that gives wrong output, the wrong exit code, or a crash.
 4. **Scope creep.** Anything implemented or tested that SPEC.md doesn't ask for or contradicts. Be precise: a test that pins down behaviour the spec *implies* is fine; behaviour the spec never mentions is not.
@@ -48,7 +50,7 @@ Learn the design from the code itself. Don't flag a deliberate design choice as 
 ## What NOT to report
 - Pure style preferences: formatting, import order, brace style, "I'd use streams here".
 - Alternative architectures.
-- Defensive handling for situations the spec never mentions, such as `null`. You may note it, but say that adding it would be scope creep.
+- Defensive handling for situations the spec never mentions. You may note it, but say that adding it would be scope creep. The internal-error path (exit 3) is in the spec, so a test that triggers it, for example with a `null` side, is not scope creep.
 
 ## Report format
 - **Verdict:** 1–2 sentences.
