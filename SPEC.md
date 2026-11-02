@@ -12,15 +12,14 @@ java -jar target/triangle-classifier.jar <a> <b> <c>
 ```
 
 - Exactly three arguments. Each one is a side length.
-- No flags or options. `--help`, `-h` and similar are treated as side values (and so
-  are invalid).
+- No flags or options.
 - Input comes only from the arguments. Stdin is not read.
 
 ## Side length format
 
 Each side is expected to be either a whole number written in plain digits, such as `5`
-or `120`, or other text, such as `abc`. Numbers are assumed never to have leading zeros
-(`05`) or surrounding whitespace.
+or `120`, or other text, such as `abc`. Numbers are assumed never to have surrounding
+whitespace. Leading zeros are allowed and do not change the value: `05` is read as `5`.
 
 A side is valid only if it matches all of these rules:
 
@@ -70,6 +69,7 @@ and nothing else. Exit code `0`. Nothing is written to stderr.
 | 0         | Success          | Valid triangle, classified                        |
 | 1         | Invalid triangle | At least one side is not a valid positive integer, or all sides are valid but break the triangle inequality |
 | 2         | Usage error      | The argument count is not exactly 3               |
+| 3         | Internal error   | An unexpected failure inside the program (a bug)  |
 
 Checks run in this order: argument count, then every side, then the triangle
 inequality. Each stage runs only if the one before it passed.
@@ -78,6 +78,15 @@ inequality. Each stage runs only if the one before it passed.
 
 ```
 Usage: triangle-classifier <a> <b> <c>
+```
+
+### Internal error (exit 3)
+
+If the program fails in a way the rules above don't cover, it prints this single line
+and no stack trace:
+
+```
+Error: unexpected internal error
 ```
 
 ### Invalid sides (exit 1)
@@ -100,7 +109,8 @@ problems occurs.
 Error: sides <a>, <b>, <c> do not form a triangle
 ```
 
-The sides appear in argument order.
+The sides appear in argument order. Each side is shown as a number, without leading zeros
+(`05` is shown as `5`).
 
 ## Examples
 

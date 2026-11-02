@@ -1,5 +1,6 @@
 package com.bms.triangle.cli;
 
+
 import com.bms.triangle.cli.enums.ExitCode;
 import com.bms.triangle.core.TriangleClassifier;
 import com.bms.triangle.core.exception.InvalidSidesException;
@@ -36,11 +37,14 @@ public final class TriangleClassifierCommand {
             printLine(err, "Error: sides %s, %s, %s do not form a triangle"
                     .formatted(sides.get(0), sides.get(1), sides.get(2)));
             return ExitCode.INVALID_TRIANGLE;
+        } catch (RuntimeException exception) {
+            // A bug, not bad input: give it its own exit code and keep the stack trace away from the user.
+            printLine(err, "Error: unexpected internal error");
+            return ExitCode.INTERNAL_ERROR;
         }
     }
 
     private static void printLine(PrintStream stream, String line) {
         stream.print(line + "\n");
-        stream.flush();
     }
 }

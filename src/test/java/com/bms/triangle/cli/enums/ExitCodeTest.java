@@ -1,7 +1,6 @@
 package com.bms.triangle.cli.enums;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
 
 class ExitCodeTest {
@@ -11,5 +10,6 @@ class ExitCodeTest {
         assertThat(ExitCode.SUCCESS.code()).isEqualTo(0);
         assertThat(ExitCode.INVALID_TRIANGLE.code()).isEqualTo(1);
         assertThat(ExitCode.USAGE_ERROR.code()).isEqualTo(2);
+        assertThat(ExitCode.INTERNAL_ERROR.code()).isEqualTo(3);
     }
 }
