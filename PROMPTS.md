@@ -18,6 +18,7 @@ automated check keeps the code honest.
 | 6    | Guardrails                | `Stop` hook                     |
 | 7    | Spec review               | Custom subagent (`spec-reviewer`) |
 | 8    | Code review               | `/code-review`                  |
+| 9    | Committing and pushing    | Custom skill (`/commit-push`)   |
 
 ---
 
@@ -186,3 +187,11 @@ longer a valid triangle. Claude didn't change the test. Following `CLAUDE.md`, i
 stopped and asked me, and the `Stop` hook kept reporting the failure at the end of
 each turn until I decided. The review also caught that the git index was half staged,
 which would have produced a commit that doesn't compile.
+
+## 9. Committing and pushing with a custom skill
+
+**Why:** I wanted every commit to follow the same safe steps. The project skill
+[`.claude/skills/commit-push/SKILL.md`](.claude/skills/commit-push/SKILL.md) runs
+`mvn verify`, stages only tracked files, writes the message, commits and pushes. It never
+adds untracked files unless I name them, and it never force-pushes. Only I can start it,
+by typing `/commit-push`; Claude can't run it on its own.
