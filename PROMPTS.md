@@ -155,6 +155,9 @@ rejected some with a reason.
   explained why not: the wording users see would then live in a core class. I made the
   exception expose its sides through `sides()`, so the CLI formats both error types the
   same way.
+- **Each valid side was parsed into a `BigInteger` twice:** once for the positivity
+  check and again when it was stored. The spec allows numbers of any length, so this
+  was wasted work. I now parse each side once into a local variable and reuse it.
 
 **Rejected, with my reasons**
 

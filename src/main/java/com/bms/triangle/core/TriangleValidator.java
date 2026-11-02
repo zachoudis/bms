@@ -1,12 +1,13 @@
 package com.bms.triangle.core;
 
-import com.bms.triangle.core.exception.InvalidSidesException;
-import com.bms.triangle.core.model.ValidationError;
-import com.bms.triangle.core.enums.ValidationReason;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import com.bms.triangle.core.enums.ValidationReason;
+import com.bms.triangle.core.exception.InvalidSidesException;
+import com.bms.triangle.core.model.ValidationError;
 
 /** Validates three side lengths given as text and converts them to numbers. */
 public final class TriangleValidator {
@@ -24,10 +25,13 @@ public final class TriangleValidator {
         for (String value : List.of(a, b, c)) {
             if (!INTEGER.matcher(value).matches()) {
                 errors.add(new ValidationError(value, ValidationReason.NOT_AN_INTEGER));
-            } else if (new BigInteger(value).signum() <= 0) {
+                continue;
+            }
+            BigInteger side = new BigInteger(value);
+            if (side.signum() <= 0) {
                 errors.add(new ValidationError(value, ValidationReason.NOT_POSITIVE));
             } else {
-                sides.add(new BigInteger(value));
+                sides.add(side);
             }
         }
 
